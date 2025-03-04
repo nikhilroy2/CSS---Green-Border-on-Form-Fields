@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontaktformular</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: white;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            /* 3D Shadow Effect */
+            box-shadow: 
+                0 15px 30px rgba(13, 127, 66, 0.2),
+                0 10px 20px rgba(0, 0, 0, 0.15),
+                inset 0 2px 4px rgba(255, 255, 255, 0.8),
+                inset 0 -2px 4px rgba(13, 127, 66, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+            max-width: 700px;
+        }
+
+        .form-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 20px 40px rgba(13, 127, 66, 0.25),
+                0 15px 25px rgba(0, 0, 0, 0.2),
+                inset 0 2px 4px rgba(255, 255, 255, 0.8),
+                inset 0 -2px 4px rgba(13, 127, 66, 0.1);
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background: radial-gradient(circle, rgba(13, 127, 66, 0.15) 0%, transparent 60%);
+            transform: rotate(45deg);
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        .form-content {
+            position: relative;
+            z-index: 1;
+            padding: 2rem;
+        }
+
+        .input-field {
+            background: #f9fafb;
+            border: 2px solid #0D7F42;
+            border-radius: 8px;
+            padding: 12px 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #2ecc71;
+            box-shadow: 0 4px 12px rgba(13, 127, 66, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .message-field {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .field-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .input-field:focus + .field-icon,
+        .input-field:focus ~ label .field-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* Floating labels */
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper label {
+            position: absolute;
+            top: 50%;
+            left: 16px;
+            transform: translateY(-50%);
+            color: #64748b;
+            transition: all 0.2s ease;
+            pointer-events: none;
+            background: #f9fafb;
+            padding: 0 4px;
+        }
+
+        .input-wrapper .input-field:not(:placeholder-shown) + label,
+        .input-wrapper .input-field:focus + label {
+            top: 0;
+            font-size: 0.75rem;
+            color: #0D7F42;
+        }
+
+        /* Checkbox styling */
+        input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #0D7F42;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+            background: white;
+            position: relative;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        input[type="checkbox"]:checked {
+            background: #0D7F42;
+            border-color: #0D7F42;
+            animation: checkmark 0.3s ease-in-out;
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        @keyframes checkmark {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.85); }
+            100% { transform: scale(1); }
+        }
+
+        /* Submit button */
+        .submit-button {
+            background: linear-gradient(135deg, #0D7F42 0%, #2ecc71 100%);
+            border: none;
+            border-radius: 8px;
+            padding: 14px 24px;
+            transition: all 0.1s ease;
+            box-shadow: 0 4px 15px rgba(13, 127, 66, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+
+        .submit-button:hover::after {
+            width: 200%;
+            height: 200%;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(13, 127, 66, 0.4);
+        }
+
+        .label-text {
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .form-header::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 80px;
+            height: 80px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230D7F42' stroke-width='1.5' opacity='0.15'%3E%3Cpath d='M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z'/%3E%3Cpolyline points='9 22 9 12 15 12 15 22'/%3E%3C/svg%3E");
+            z-index: 0;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 640px) {
+            .form-container {
+                margin: 0 10px;
+                padding: 1.5rem;
+            }
+
+            .form-content {
+                padding: 1rem;
+            }
+
+            .grid-cols-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .submit-button {
+                padding: 12px 20px;
+            }
+
+            .form-header::before {
+                width: 60px;
+                height: 60px;
+                top: -20px;
+                right: -20px;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-content">
+            <div class="form-header relative">
+                <h1 class="text-3xl font-bold mb-8 text-gray-900 border-b-2 border-[#0D7F42]/20 pb-4 flex items-center justify-center gap-3">
+                    <svg class="w-8 h-8 text-[#0D7F42]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Kontaktformular
+                </h1>
+            </div>
+
+            <form class="space-y-6">
+                <!-- Text Fields -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="input-wrapper">
+                        <input type="text" id="adresse" name="adresse" class="input-field w-full" placeholder=" ">
+                        <label for="adresse" class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-[#0D7F42] field-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6-10l2 2" />
+                            </svg>
+                            <span class="label-text">Adresse</span>
+                        </label>
+                    </div>
+
+                    <div class="input-wrapper">
+                        <input type="text" id="plzstadt" name="plzstadt" class="input-field w-full" placeholder=" ">
+                        <label for="plzstadt" class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-[#0D7F42] field-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 21h-2a9 9 0 01-9-9 9 9 0 019-9h2a9 9 0 019 9 9 9 0 01-9 9zm-1-18v18" />
+                            </svg>
+                            <span class="label-text">Postleitzahl / Stadt</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Text Area -->
+                <div class="input-wrapper">
+                    <textarea id="nachricht" name="nachricht" class="input-field message-field w-full" placeholder=" "></textarea>
+                    <label for="nachricht" class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-[#0D7F42] field-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                        </svg>
+                        <span class="label-text">Deine Nachricht</span>
+                    </label>
+                </div>
+
+                <!-- Checkbox -->
+                <div class="flex items-start space-x-3 bg-white/70 px-3 py-4 rounded-lg border border-gray-100/50">
+                    <input type="checkbox" id="zustimmung" name="zustimmung" style="min-width: 22px;">
+                    <label for="zustimmung" class="text-sm text-gray-600 hover:text-gray-800 transition-colors">
+                        <span class="label-text">Mit dem Absenden stimmst du zu, dass die gesendeten Daten für die Bearbeitung deiner Anfrage verwendet werden. Es gelten unsere <a href="#" class="text-[#0D7F42] hover:underline">Datenschutzbestimmungen</a>.</span>
+                    </label>
+                </div>
+
+                <!-- reCAPTCHA -->
+                <div class="input-field p-4 flex items-center gap-4 cursor-pointer hover:bg-gray-50 transition-colors">
+                    <input type="checkbox" id="recaptcha" name="recaptcha" class="w-6 h-6" style="min-width: 22px;">
+                    <div class="flex flex-col">
+                        <span class="text-sm text-gray-700 font-medium">Ich bin kein Roboter</span>
+                        <a href="#" class="text-xs text-gray-500 hover:text-[#0D7F42] transition-colors">Datenschutz & Nutzungsbedingungen</a>
+                    </div>
+                    <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA" class="w-8 h-8 ml-auto opacity-80">
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-button w-full text-white font-medium text-sm uppercase tracking-wider flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="white" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                    Nachricht Senden
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
